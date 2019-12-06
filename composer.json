@@ -1,11 +1,11 @@
 {
     "name": "gollumsf/entity-relation-setter",
-    "type": "symfony-bundle",
+    "type": "library",
     "description": "Trait for add method cross setter",
     "keywords" : [
-        "api",
-        "simple",
-        "rest",
+        "setter",
+        "entity",
+        "relation",
         "gollumsf"
     ],
     "homepage": "https://github.com/GollumSF/eentity-relation-setter",
