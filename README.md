@@ -1,4 +1,4 @@
-# EnTityRelationSetter
+# EntityRelationSetter
 
 [![Build Status](https://travis-ci.org/GollumSF/entity-relation-setter.svg?branch=master)](https://travis-ci.org/GollumSF/entity-relation-setter)
 [![License](https://poser.pugx.org/gollumsf/entity-relation-setter/license)](https://packagist.org/packages/gollumsf/entity-relation-setter)
