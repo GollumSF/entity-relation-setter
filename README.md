@@ -35,7 +35,7 @@ class User {
 	////////////
 
 	public function setAddress(?Address $address): self {
-		return $this->oneToOneSet($address, 'address', 'user');
+		return $this->oneToOneSet($address/*, 'address', 'user'*/);
 	}
 }
 
@@ -54,7 +54,7 @@ class Address {
 	////////////
 
 	public function setUser(?User $user): self {
-		return $this->oneToOneSet($user, 'user', 'address');
+		return $this->oneToOneSet($user/*, 'user', 'address'*/);
 	}
 }
 
@@ -71,7 +71,7 @@ class Address {
 	use ManyToOneSetter;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="addresss")
+	 * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="addresses")
 	 * @var Country
 	 */
 	private $country;
@@ -81,7 +81,7 @@ class Address {
 	////////////
 
 	public function setCountry(?Country $country): self {
-		return $this->manyToOneSet($country, 'country', 'address');
+		return $this->manyToOneSet($country/*, 'country', 'address'*/);
 	}
 }
 
@@ -93,10 +93,10 @@ class Country {
 	 * @ORM\OneToMany(targetEntity=Address::class, mappedBy="country")
 	 * @var Address[]|ArrayCollection
 	 */
-	private $addresss;
+	private $addresses;
 	
 	public function __construct() {
-		$this->addresss = new ArrayCollection();
+		$this->addresses = new ArrayCollection();
 	}
 
 	/////////
@@ -104,7 +104,7 @@ class Country {
 	/////////
 
 	public function addAddress(Address $address): self {
-		return $this->oneToManyAdd($address, 'addresss', 'country');
+		return $this->oneToManyAdd($address/*, 'addresses', 'country'*/);
 	}
 	
 	////////////
@@ -112,7 +112,7 @@ class Country {
 	////////////
 
 	public function removeAddress(Address $address): self {
-		return $this->oneToManyRemove($address, 'addresss', 'country');
+		return $this->oneToManyRemove($address/*, 'addresses', 'country'*/);
 	}
 }
 
@@ -142,7 +142,7 @@ class Post {
 	/////////
 
 	public function addTag(Tag $tag): self {
-		return $this->manyToManyAdd($tag, 'tags', 'post');
+		return $this->manyToManyAdd($tag/*, 'tags', 'post'*/);
 	}
 	
 	////////////
@@ -150,7 +150,7 @@ class Post {
 	////////////
 
 	public function removeTag(Tag $tag): self {
-		return $this->manyToManyRemove($tag, 'tags', 'post');
+		return $this->manyToManyRemove($tag/*, 'tags', 'post'*/);
 	}
 }
 
@@ -173,7 +173,7 @@ class Tag {
 	/////////
 
 	public function addPost(Post $post): self {
-		return $this->manyToManyAdd($post, 'posts', 'tag');
+		return $this->manyToManyAdd($post/*, 'posts', 'tag'*/);
 	}
 	
 	////////////
@@ -181,7 +181,7 @@ class Tag {
 	////////////
 
 	public function removePost(Post $post): self {
-		return $this->manyToManyRemove($post, 'posts', 'tag');
+		return $this->manyToManyRemove($post/*, 'posts', 'tag'*/);
 	}
 }
 
