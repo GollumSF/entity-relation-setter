@@ -7,11 +7,14 @@ trait ManyToOneSetter {
 	protected function manyToOneSet($value, $fieldName, $targetName): self {
 		$addMethod = 'add'.ucfirst($targetName);
 		$removeMethod = 'remove'.ucfirst($targetName);
-		$diff = $this->$fieldName && $value;
-		
-		if ($diff && $this->$fieldName) $this->$fieldName->$removeMethod($this);
+		$oldValue = $this->$fieldName;
+		$diff = $oldValue && $value;
+
 		$this->$fieldName = $value;
-		if ($diff && $value) $value->$addMethod($this);
+		if ($diff) {
+			if ($oldValue) $oldValue->$removeMethod($this);
+			if ($value   ) $value   ->$addMethod($this);
+		};
 		return $this;
 	}
 }
