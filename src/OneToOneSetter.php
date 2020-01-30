@@ -2,7 +2,7 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 trait OneToOneSetter {
 	
@@ -16,7 +16,7 @@ trait OneToOneSetter {
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if ($class instanceof Proxy) {
+			if (is_subclass_of($class, Proxy::class)) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -28,13 +28,17 @@ trait OneToOneSetter {
 		
 		$methodSet = 'set'.ucfirst($targetName);
 		
-		$diff = $this->$fieldName !== $value;
-		if ($diff && $this->$fieldName) {
-			if (!method_exists($this->$fieldName, $methodSet)) {
-				throw new \LogicException(sprintf('Method %s not exist or not public on class %s.', $methodSet, get_class($this->$fieldName)));
+		$oldValue = $this->$fieldName;
+		$diff = $oldValue !== $value;
+		if ($diff && $oldValue) {
+			if (!method_exists($oldValue, $methodSet)) {
+				throw new \LogicException(sprintf('Method %s not exist or not public on class %s.', $methodSet, get_class($oldValue)));
 			}
-			$this->purchaseAddress->$methodSet(null);
+			$this->$fieldName = null;
+			$oldValue->$methodSet(null);
 		}
+		
+		
 		$this->$fieldName = $value;
 		if ($diff && $value) {
 			if (!method_exists($value, $methodSet)) {
