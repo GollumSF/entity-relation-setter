@@ -65,8 +65,8 @@ class Address {
 ### OneToManySetter and ManyToOneSetter
 
 ```php
-use GollumSF\EntityRelationSetter\OneToOneMany;
-use GollumSF\EntityRelationSetter\ManyToOneOne;
+use GollumSF\EntityRelationSetter\ManyToOneSetter;
+use GollumSF\EntityRelationSetter\OneToManySetter;
 
 class Address {
 	
@@ -89,7 +89,7 @@ class Address {
 
 class Country {
 	
-	use ManyToOneOne;
+	use OneToManySetter;
 
 	/**
 	 * @ORM\OneToMany(targetEntity=Address::class, mappedBy="country")

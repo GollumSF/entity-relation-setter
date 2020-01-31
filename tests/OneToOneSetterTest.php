@@ -14,12 +14,12 @@ class User {
 	private $address = null;
 	private $infos = null;
 
-	public function setAddress($address) {
-		$this->oneToOneSet($address);
+	public function setAddress(?Address $address): self {
+		return $this->oneToOneSet($address);
 	}
 
-	public function setInfos($infos) {
-		$this->oneToOneSet($infos);
+	public function setInfos(?Infos $infos): self {
+		return $this->oneToOneSet($infos);
 	}
 }
 
@@ -29,8 +29,8 @@ class Address {
 
 	private $user = null;
 
-	public function setUser($user) {
-		$this->oneToOneSet($user);
+	public function setUser(?User $user): self {
+		return $this->oneToOneSet($user);
 	}
 }
 class ProxyAddress extends Address implements Proxy {
@@ -49,14 +49,14 @@ class OneToOneSetterTest extends TestCase {
 		$address1 = new Address();
 		$address2 = new ProxyAddress();
 
-		$user->setAddress($address1);
+		$this->assertEquals($user->setAddress($address1), $user);
 		$this->assertEquals($this->reflectionGetValue($address1, 'user'), $user);
 		$this->assertEquals($this->reflectionGetValue($address2, 'user'), null);
-		$user->setAddress($address2);
+		$this->assertEquals($user->setAddress($address2), $user);
 		$this->assertEquals($this->reflectionGetValue($address1, 'user'), null);
 		$this->assertEquals($this->reflectionGetValue($address2, 'user'), $user);
 
-		$user->setAddress(null);
+		$this->assertEquals($user->setAddress(null), $user);
 		$this->assertEquals($this->reflectionGetValue($address1, 'user'), null);
 		$this->assertEquals($this->reflectionGetValue($address2, 'user'), null);
 	}
@@ -66,7 +66,7 @@ class OneToOneSetterTest extends TestCase {
 		$infos = new Infos();
 
 		$this->expectException(\LogicException::class);
-		$user->setInfos($infos);
+		$this->assertEquals($user->setInfos($infos), $user);
 	}
 
 	public function testOneToOneSeException2() {
@@ -76,6 +76,6 @@ class OneToOneSetterTest extends TestCase {
 		$this->reflectionSetValue($user, 'infos', $infos1);
 
 		$this->expectException(\LogicException::class);
-		$user->setInfos($infos2);
+		$this->assertEquals($user->setInfos($infos2), $user);
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 trait ManyToOneSetter {
 	
@@ -16,7 +16,7 @@ trait ManyToOneSetter {
 
 		if ($targetName === null) {
 			$class = get_called_class();
-			if ($class instanceof Proxy) {
+			if (is_subclass_of($class, Proxy::class)) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -29,7 +29,7 @@ trait ManyToOneSetter {
 		$addMethod = 'add'.ucfirst($targetName);
 		$removeMethod = 'remove'.ucfirst($targetName);
 		$oldValue = $this->$fieldName;
-		$diff = $oldValue && $value;
+		$diff = $oldValue !== $value;
 
 		$this->$fieldName = $value;
 		if ($diff) {

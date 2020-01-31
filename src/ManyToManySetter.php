@@ -3,7 +3,7 @@
 namespace GollumSF\EntityRelationSetter;
 
 use Doctrine\Common\Inflector\Inflector;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 trait ManyToManySetter {
 	
@@ -18,7 +18,7 @@ trait ManyToManySetter {
 
 		if ($targetName === null) {
 			$class = get_called_class();
-			if ($class instanceof Proxy) {
+			if (is_subclass_of($class, Proxy::class)) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -37,7 +37,7 @@ trait ManyToManySetter {
 		return $this;
 	}
 	
-	protected function manyToManyRemove($value, $fieldName, $targetName): self {
+	protected function manyToManyRemove($value, string $fieldName = null, string $targetName = null): self {
 
 		if ($fieldName === null) {
 			$trace = debug_backtrace();
@@ -48,7 +48,7 @@ trait ManyToManySetter {
 
 		if ($targetName === null) {
 			$class = get_called_class();
-			if ($class instanceof Proxy) {
+			if (is_subclass_of($class, Proxy::class)) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -61,7 +61,7 @@ trait ManyToManySetter {
 		$removeMethod = 'remove'.ucfirst($targetName);
 		if ($this->$fieldName->contains($value)) {
 			$this->$fieldName->removeElement($value);
-			$value->$removeMethod(null);
+			$value->$removeMethod($this);
 		}
 		return $this;
 	}

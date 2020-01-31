@@ -3,7 +3,7 @@
 namespace GollumSF\EntityRelationSetter;
 
 use Doctrine\Common\Inflector\Inflector;
-use Doctrine\Common\Persistence\Proxy;
+use Doctrine\Persistence\Proxy;
 
 trait OneToManySetter {
 	
@@ -18,7 +18,7 @@ trait OneToManySetter {
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if ($class instanceof Proxy) {
+			if (is_subclass_of($class, Proxy::class)) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -47,7 +47,7 @@ trait OneToManySetter {
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if ($class instanceof Proxy) {
+			if (is_subclass_of($class, Proxy::class)) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
