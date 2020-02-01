@@ -1,6 +1,6 @@
 # EntityRelationSetter
 
-[![Build Status](https://travis-ci.com/GollumSF/entity-relation-setter.svg?branch=master)](https://travis-ci.com/GollumSF/entity-relation-setter)
+[![Build Status](https://travis-ci.org/GollumSF/entity-relation-setter.svg?branch=master)](https://travis-ci.org/GollumSF/entity-relation-setter)
 [![Coverage](https://coveralls.io/repos/github/GollumSF/entity-relation-setter/badge.svg?branch=master)](https://coveralls.io/github/GollumSF/entity-relation-setter)
 [![License](https://poser.pugx.org/gollumsf/entity-relation-setter/license)](https://packagist.org/packages/gollumsf/entity-relation-setter)
 [![Latest Stable Version](https://poser.pugx.org/gollumsf/entity-relation-setter/v/stable)](https://packagist.org/packages/gollumsf/entity-relation-setter)
