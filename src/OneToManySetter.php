@@ -62,6 +62,10 @@ trait OneToManySetter {
 			$this->$fieldName->removeElement($value);
 			$value->$methodSet(null);
 		}
+		// Fix reset indexing
+		if (!$this->$fieldName->count()) {
+			$this->$fieldName->clear();
+		}
 		return $this;
 	}
 }
