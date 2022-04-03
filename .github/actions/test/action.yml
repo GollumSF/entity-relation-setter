@@ -59,12 +59,21 @@ runs:
       run: |
         composer global require php-coveralls/php-coveralls
         php-coveralls --coverage_clover=build/logs/clover.xml -v
-        
-    - name: Notify discord
+
+    - name: Notify discord success
       uses: th0th/notify-discord@v0.4.1
-      if: ${{ always() }}
+      if: ${{ success() }}
       env:
         DISCORD_WEBHOOK_URL: ${{ inputs.discord_webhook }}
         GITHUB_ACTOR: ${{ github.actor }}
         GITHUB_JOB_NAME: "Build and deploy"
-        GITHUB_JOB_STATUS: ${{ job.status }}
+        GITHUB_JOB_STATUS: 'success'
+
+    - name: Notify discord failure
+      uses: th0th/notify-discord@v0.4.1
+      if: ${{ failure() }}
+      env:
+        DISCORD_WEBHOOK_URL: ${{ inputs.discord_webhook }}
+        GITHUB_ACTOR: ${{ github.actor }}
+        GITHUB_JOB_NAME: "Build and deploy"
+        GITHUB_JOB_STATUS: 'failure'
