@@ -2,7 +2,6 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\InflectorFactory;
 use Doctrine\Persistence\Proxy;
 
