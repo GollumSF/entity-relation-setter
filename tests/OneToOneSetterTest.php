@@ -1,8 +1,7 @@
 <?php
 
-namespace TestGollumSF\EntityRelationSetter;
+namespace Test\GollumSF\EntityRelationSetter;
 
-use Doctrine\Persistence\Proxy;
 use GollumSF\EntityRelationSetter\OneToOneSetter;
 use GollumSF\ReflectionPropertyTest\ReflectionPropertyTrait;
 use PHPUnit\Framework\TestCase;
@@ -11,32 +10,54 @@ class User {
 
 	use OneToOneSetter;
 
-	private $address = null;
+	private $address3 = null;
 	private $infos = null;
-
-	public function setAddress(?Address $address): self {
-		return $this->oneToOneSet($address);
+	
+	/**
+	 * @param ?Address3 $address3
+	 * @return $this
+	 */
+	public function setAddress3($address3): self {
+		return $this->oneToOneSet($address3);
 	}
-
-	public function setInfos(?Infos $infos): self {
+	
+	/**
+	 * @param ?Infos $infos
+	 * @return $this
+	 */
+	public function setInfos($infos): self {
 		return $this->oneToOneSet($infos);
 	}
 }
 
-class Address {
+class Address3 {
 
 	use OneToOneSetter;
 
 	private $user = null;
-
-	public function setUser(?User $user): self {
+	
+	/**
+	 * @param ?User $user
+	 * @return $this
+	 */
+	public function setUser($user): self {
 		return $this->oneToOneSet($user);
 	}
 }
-class ProxyAddress extends Address implements Proxy {
-	public function __load() {}
-	public function __isInitialized() {}
+
+if (interface_exists ('Doctrine\Persistence\Proxy')) {
+	class ProxyAddress3 extends Address3 implements \Doctrine\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
 }
+if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
+	class ProxyAddress3 extends Address3 implements \Doctrine\Common\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
+}
+
 class Infos {
 }
 
@@ -46,19 +67,19 @@ class OneToOneSetterTest extends TestCase {
 	
 	public function testOneToOneSet() {
 		$user = new User();
-		$address1 = new Address();
-		$address2 = new ProxyAddress();
+		$address1 = new Address3();
+		$address2 = new ProxyAddress3();
 
-		$this->assertEquals($user->setAddress($address1), $user);
+		$this->assertEquals($user->setAddress3($address1), $user);
 		$this->assertEquals($this->reflectionGetValue($address1, 'user'), $user);
-		$this->assertEquals($this->reflectionGetValue($address2, 'user'), null);
-		$this->assertEquals($user->setAddress($address2), $user);
+		$this->assertEquals($this->reflectionGetValue($address2, 'user', Address3::class), null);
+		$this->assertEquals($user->setAddress3($address2), $user);
 		$this->assertEquals($this->reflectionGetValue($address1, 'user'), null);
-		$this->assertEquals($this->reflectionGetValue($address2, 'user'), $user);
+		$this->assertEquals($this->reflectionGetValue($address2, 'user', Address3::class), $user);
 
-		$this->assertEquals($user->setAddress(null), $user);
+		$this->assertEquals($user->setAddress3(null), $user);
 		$this->assertEquals($this->reflectionGetValue($address1, 'user'), null);
-		$this->assertEquals($this->reflectionGetValue($address2, 'user'), null);
+		$this->assertEquals($this->reflectionGetValue($address2, 'user', Address3::class), null);
 	}
 
 	public function testOneToOneSeException1() {

@@ -3,7 +3,6 @@
 namespace Test\GollumSF\EntityRelationSetter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\Proxy;
 use GollumSF\EntityRelationSetter\ManyToOneSetter;
 use GollumSF\EntityRelationSetter\OneToManySetter;
 use GollumSF\ReflectionPropertyTest\ReflectionPropertyTrait;
@@ -16,19 +15,35 @@ class Address {
 	private $country;
 
 	private $town;
-
-	public function setCountry(?Country $country): self {
+	
+	/**
+	 * @param ?Country $country
+	 * @return $this
+	 */
+	public function setCountry($country): self {
 		return $this->manyToOneSet($country);
 	}
-
-	public function setTown(?Town $town): self {
+	
+	/**
+	 * @param ?Town $town
+	 * @return $this
+	 */
+	public function setTown( $town): self {
 		return $this->manyToOneSet($town);
 	}
 }
 
-class ProxyAddress extends Address implements Proxy {
-	public function __load() {}
-	public function __isInitialized() {}
+if (interface_exists ('Doctrine\Persistence\Proxy')) {
+	class ProxyAddress extends Address implements \Doctrine\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
+}
+if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
+	class ProxyAddress extends Address implements \Doctrine\Common\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
 }
 
 class Country {
@@ -40,12 +55,20 @@ class Country {
 	public function __construct() {
 		$this->addresses = new ArrayCollection();
 	}
-
-	public function addAddress(Address $address): self {
+	
+	/**
+	 * @param Address $address
+	 * @return $this
+	 */
+	public function addAddress($address): self {
 		return $this->oneToManyAdd($address);
 	}
-
-	public function removeAddress(Address $address): self {
+	
+	/**
+	 * @param Address $address
+	 * @return $this
+	 */
+	public function removeAddress($address): self {
 		return $this->oneToManyRemove($address);
 	}
 }
@@ -65,26 +88,26 @@ class ManyToOneSetterTest extends TestCase {
 		$this->assertEquals($address1->setCountry($country), $address1);
 		$this->assertEquals($this->reflectionGetValue($country, 'addresses')->getValues(), [ $address1 ]);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country'), $country);
-		$this->assertEquals($this->reflectionGetValue($address2, 'country'), null);
+		$this->assertEquals($this->reflectionGetValue($address2, 'country', Address::class), null);
 		$this->assertEquals($address2->setCountry($country), $address2);
 		$this->assertEquals($this->reflectionGetValue($country, 'addresses')->getValues(), [ $address1, $address2 ]);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country'), $country);
-		$this->assertEquals($this->reflectionGetValue($address2, 'country'), $country);
+		$this->assertEquals($this->reflectionGetValue($address2, 'country', Address::class), $country);
 		$this->assertEquals($address2->setCountry($country), $address2);
 		$this->assertEquals($this->reflectionGetValue($country, 'addresses')->getValues(), [ $address1, $address2 ]);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country'), $country);
-		$this->assertEquals($this->reflectionGetValue($address2, 'country'), $country);
+		$this->assertEquals($this->reflectionGetValue($address2, 'country', Address::class), $country);
 		$this->assertEquals($address2->setCountry(null), $address2);
 		$this->assertEquals($this->reflectionGetValue($country, 'addresses')->getValues(), [ $address1]);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country'), $country);
-		$this->assertEquals($this->reflectionGetValue($address2, 'country'), null);
+		$this->assertEquals($this->reflectionGetValue($address2, 'country', Address::class), null);
 		$this->assertEquals($address2->setCountry(null), $address2);
 		$this->assertEquals($this->reflectionGetValue($country, 'addresses')->getValues(), [ $address1 ]);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country'), $country);
-		$this->assertEquals($this->reflectionGetValue($address2, 'country'), null);
+		$this->assertEquals($this->reflectionGetValue($address2, 'country', Address::class), null);
 	}
 
-	public function testSetExceprionAdd() {
+	public function testSetExceptionAdd() {
 		$address = new Address();
 		$town = new Town();
 
@@ -92,7 +115,7 @@ class ManyToOneSetterTest extends TestCase {
 		$address->setTown($town);
 	}
 
-	public function testSetExceprionRemove() {
+	public function testSetExceptionRemove() {
 		$address = new Address();
 		$town = new Town();
 		
@@ -101,63 +124,4 @@ class ManyToOneSetterTest extends TestCase {
 		$this->expectException(\LogicException::class);
 		$address->setTown(null);
 	}
-	
-//	
-////	protected function oneToManyAdd($value, string $fieldName = null, $targetName = null): self {
-////		
-////		if ($fieldName === null) {
-////			$trace = debug_backtrace();
-////			$calledMethod = $trace[1]['function'];
-////			$fieldName = lcfirst(substr($calledMethod, 3));
-////			$fieldName = Inflector::pluralize($fieldName);
-////		}
-////		
-////		if ($targetName === null) {
-////			$class = get_called_class();
-////			if ($class instanceof Proxy) {
-////				$class = get_parent_class($class);
-////			}
-////			$targetName = $class;
-////			if (($index = strrpos($targetName, '\\')) !== false) {
-////				$targetName = substr($targetName, $index + 1);
-////			}
-////			$targetName = lcfirst($targetName);
-////		}
-////		
-////		$methodSet = 'set'.ucfirst($targetName);
-////		if (!$this->$fieldName->contains($value)) {
-////			$this->$fieldName->add($value);
-////			$value->$methodSet($this);
-////		}
-////		return $this;
-////	}
-////	
-////	protected function oneToManyRemove($value, string $fieldName = null, $targetName = null): self {
-////		
-////		if ($fieldName === null) {
-////			$trace = debug_backtrace();
-////			$calledMethod = $trace[1]['function'];
-////			$fieldName = lcfirst(substr($calledMethod, 6));
-////			$fieldName = Inflector::pluralize($fieldName);
-////		}
-////		
-////		if ($targetName === null) {
-////			$class = get_called_class();
-////			if ($class instanceof Proxy) {
-////				$class = get_parent_class($class);
-////			}
-////			$targetName = $class;
-////			if (($index = strrpos($targetName, '\\')) !== false) {
-////				$targetName = substr($targetName, $index + 1);
-////			}
-////			$targetName = lcfirst($targetName);
-////		}
-////		
-////		$methodSet = 'set'.ucfirst($targetName);
-////		if ($this->$fieldName->contains($value)) {
-////			$this->$fieldName->removeElement($value);
-////			$value->$methodSet(null);
-////		}
-////		return $this;
-////	}
 }

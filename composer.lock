@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5965176285a398ffc5ece45ece838039",
+    "content-hash": "6e2c274ea99dd39868a621b9cdc0378a",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1848,23 +1848,22 @@
     "packages-dev": [
         {
             "name": "gollumsf/reflection-property-test",
-            "version": "dev-master",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GollumSF/reflection-property-test.git",
-                "reference": "78255a74f960fd756225df26987662638ac25f14"
+                "reference": "e2cd120b35f29b34fe28789a6f8128a706bb4fbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GollumSF/reflection-property-test/zipball/78255a74f960fd756225df26987662638ac25f14",
-                "reference": "78255a74f960fd756225df26987662638ac25f14",
+                "url": "https://api.github.com/repos/GollumSF/reflection-property-test/zipball/e2cd120b35f29b34fe28789a6f8128a706bb4fbe",
+                "reference": "e2cd120b35f29b34fe28789a6f8128a706bb4fbe",
                 "shasum": ""
             },
             "require-dev": {
                 "doctrine/orm": "*",
                 "phpunit/phpunit": "^8.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1891,10 +1890,10 @@
             "support": {
                 "email": "smeagolworms4@gmail.com",
                 "issues": "https://github.com/GollumSF/reflection-property-test/issues",
-                "source": "https://github.com/GollumSF/reflection-property-test/tree/v1.0.4",
+                "source": "https://github.com/GollumSF/reflection-property-test/tree/v1.0.5",
                 "wiki": "https://github.com/GollumSF/reflection-property-test/blob/master/README.md"
             },
-            "time": "2020-02-03T02:15:53+00:00"
+            "time": "2022-04-03T23:11:29+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3858,13 +3857,11 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "gollumsf/reflection-property-test": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.1"
+        "php": ">=7.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"

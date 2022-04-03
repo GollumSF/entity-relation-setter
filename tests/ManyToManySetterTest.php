@@ -3,7 +3,6 @@
 namespace Test\GollumSF\EntityRelationSetter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\Proxy;
 use GollumSF\EntityRelationSetter\ManyToManySetter;
 use GollumSF\ReflectionPropertyTest\ReflectionPropertyTrait;
 use PHPUnit\Framework\TestCase;
@@ -27,9 +26,18 @@ class Post {
 		return $this->manyToManyRemove($tag);
 	}
 }
-class ProxyPost extends Post implements Proxy {
-	public function __load() {}
-	public function __isInitialized() {}
+
+if (interface_exists('Doctrine\Persistence\Proxy')) {
+	class ProxyPost extends Post implements \Doctrine\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
+}
+if (interface_exists('Doctrine\Common\Persistence\Proxy')) {
+	class ProxyPost extends Post implements \Doctrine\Common\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
 }
 
 class Tag {
@@ -50,9 +58,18 @@ class Tag {
 		return $this->manyToManyRemove($post);
 	}
 }
-class ProxyTag extends Tag implements Proxy {
-	public function __load() {}
-	public function __isInitialized() {}
+
+if (interface_exists ('Doctrine\Persistence\Proxy')) {
+	class ProxyTag extends Tag implements \Doctrine\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
+}
+if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
+	class ProxyTag extends Tag implements \Doctrine\Common\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
 }
 
 class ManyToManySetterTest extends TestCase {
@@ -70,65 +87,65 @@ class ManyToManySetterTest extends TestCase {
 		$this->assertEquals($post1->addTag($tag1), $post1);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), []);
 
 
 		$this->assertEquals($post1->addTag($tag2), $post1);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1, $tag2 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), [ $post1 ]);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), [ $post1 ]);
 
 		$this->assertEquals($post2->addTag($tag1), $post2);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1, $tag2 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1, $post2 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), [ $tag1 ]);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), [ $post1 ]);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), [ $tag1 ]);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), [ $post1 ]);
 
 		$this->assertEquals($post2->addTag($tag2), $post2);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1, $tag2 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1, $post2 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), [ $tag1, $tag2 ]);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), [ $post1, $post2 ]);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), [ $tag1, $tag2 ]);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), [ $post1, $post2 ]);
 
 		$this->assertEquals($post2->addTag($tag2), $post2);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1, $tag2 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1, $post2 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), [ $tag1, $tag2 ]);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), [ $post1, $post2 ]);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), [ $tag1, $tag2 ]);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), [ $post1, $post2 ]);
 		
 		// Remove
 
 		$this->assertEquals($post2->removeTag($tag2), $post2);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1, $tag2 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1, $post2 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), [ $tag1 ]);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), [ $post1 ]);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), [ $tag1 ]);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), [ $post1 ]);
 
 		$this->assertEquals($post2->removeTag($tag1), $post2);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1, $tag2 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), [ $post1 ]);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), [ $post1 ]);
 
 		$this->assertEquals($post1->removeTag($tag2), $post1);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), [ $tag1 ]);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), [ $post1 ]);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), []);
 
 		$this->assertEquals($post1->removeTag($tag1), $post1);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), []);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), []);
 
 		$this->assertEquals($post1->removeTag($tag1), $post1);
 		$this->assertEquals($this->reflectionGetValue($post1, 'tags')->getValues(), []);
 		$this->assertEquals($this->reflectionGetValue($tag1, 'posts')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($post2, 'tags')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($tag2, 'posts')->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($post2, 'tags', Post::class)->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($tag2, 'posts', Tag::class)->getValues(), []);
 		
 	}
 }

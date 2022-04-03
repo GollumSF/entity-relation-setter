@@ -2,23 +2,26 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Inflector\InflectorFactory;
-use Doctrine\Persistence\Proxy;
-
 trait OneToManySetter {
 	
-	protected function oneToManyAdd($value, string $fieldName = null, $targetName = null): self {
+	/**
+	 * @param $value
+	 * @param string|null $fieldName
+	 * @param string|null $targetName
+	 * @return $this
+	 */
+	protected function oneToManyAdd($value, $fieldName = null, $targetName = null): self {
 		
 		if ($fieldName === null) {
 			$trace = debug_backtrace();
 			$calledMethod = $trace[1]['function'];
 			$fieldName = lcfirst(substr($calledMethod, 3));
-			$fieldName = InflectorFactory::create()->build()->pluralize($fieldName);
+			$fieldName = Pluralize::pluralize($fieldName);
 		}
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if (is_subclass_of($class, Proxy::class)) {
+			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy') || is_subclass_of($class, 'Doctrine\Common\Persistence\Proxy')) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -36,18 +39,24 @@ trait OneToManySetter {
 		return $this;
 	}
 	
-	protected function oneToManyRemove($value, string $fieldName = null, $targetName = null): self {
+	/**
+	 * @param $value
+	 * @param string|null $fieldName
+	 * @param string|null $targetName
+	 * @return $this
+	 */
+	protected function oneToManyRemove($value, $fieldName = null, $targetName = null): self {
 		
 		if ($fieldName === null) {
 			$trace = debug_backtrace();
 			$calledMethod = $trace[1]['function'];
 			$fieldName = lcfirst(substr($calledMethod, 6));
-			$fieldName = InflectorFactory::create()->build()->pluralize($fieldName);
+			$fieldName = Pluralize::pluralize($fieldName);
 		}
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if (is_subclass_of($class, Proxy::class)) {
+			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy') || is_subclass_of($class, 'Doctrine\Common\Persistence\Proxy')) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;

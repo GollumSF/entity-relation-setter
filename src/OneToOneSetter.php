@@ -2,11 +2,15 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Persistence\Proxy;
-
 trait OneToOneSetter {
 	
-	protected function oneToOneSet($value, ?string $fieldName = null, ?string $targetName = null): self {
+	/**
+	 * @param $value
+	 * @param string|null $fieldName
+	 * @param string|null $targetName
+	 * @return $this
+	 */
+	protected function oneToOneSet($value, $fieldName = null, $targetName = null): self {
 		
 		if ($fieldName === null) {
 			$trace = debug_backtrace();
@@ -16,7 +20,7 @@ trait OneToOneSetter {
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if (is_subclass_of($class, Proxy::class)) {
+			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy') || is_subclass_of($class, 'Doctrine\Common\Persistence\Proxy')) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;

@@ -3,7 +3,6 @@
 namespace Test\GollumSF\EntityRelationSetter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\Proxy;
 use GollumSF\EntityRelationSetter\ManyToOneSetter;
 use GollumSF\EntityRelationSetter\OneToManySetter;
 use GollumSF\ReflectionPropertyTest\ReflectionPropertyTrait;
@@ -14,8 +13,12 @@ class Address2 {
 	use ManyToOneSetter;
 
 	private $country2;
-
-	public function setCountry2(?Country2 $country): self {
+	
+	/**
+	 * @param ?Country2 $country
+	 * @return $this
+	 */
+	public function setCountry2($country): self {
 		return $this->manyToOneSet($country);
 	}
 }
@@ -29,19 +32,35 @@ class Country2 {
 	public function __construct() {
 		$this->address2s = new ArrayCollection();
 	}
-
-	public function addAddress2(Address2 $address): self {
+	
+	/**
+	 * @param Address2 $address
+	 * @return $this
+	 */
+	public function addAddress2($address): self {
 		return $this->oneToManyAdd($address);
 	}
-
-	public function removeAddress2(Address2 $address): self {
+	
+	/**
+	 * @param Address2 $address
+	 * @return $this
+	 */
+	public function removeAddress2($address): self {
 		return $this->oneToManyRemove($address);
 	}
 }
 
-class ProxyCountry2 extends Country2 implements Proxy {
-	public function __load() {}
-	public function __isInitialized() {}
+if (interface_exists ('Doctrine\Persistence\Proxy')) {
+	class ProxyCountry2 extends Country2 implements \Doctrine\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
+}
+if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
+	class ProxyCountry2 extends Country2 implements \Doctrine\Common\Persistence\Proxy {
+		public function __load() {}
+		public function __isInitialized() {}
+	}
 }
 
 class OneToManySetterTest extends TestCase {
@@ -79,11 +98,11 @@ class OneToManySetterTest extends TestCase {
 
 		$this->assertEquals($proxyCountry->addAddress2($address1), $proxyCountry);
 		$this->assertEquals($this->reflectionGetValue($country, 'address2s')->getValues(), []);
-		$this->assertEquals($this->reflectionGetValue($proxyCountry, 'address2s')->getValues(), [ $address1 ]);
+		$this->assertEquals($this->reflectionGetValue($proxyCountry, 'address2s', Country2::class)->getValues(), [ $address1 ]);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country2'), $proxyCountry);
 
 		$this->assertEquals($proxyCountry->removeAddress2($address1), $proxyCountry);
-		$this->assertEquals($this->reflectionGetValue($proxyCountry, 'address2s')->getValues(), []);
+		$this->assertEquals($this->reflectionGetValue($proxyCountry, 'address2s', Country2::class)->getValues(), []);
 		$this->assertEquals($this->reflectionGetValue($address1, 'country2'), null);
 		
 	}

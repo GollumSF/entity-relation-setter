@@ -2,8 +2,6 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Persistence\Proxy;
-
 trait ManyToOneSetter {
 	
 	protected function manyToOneSet($value, $fieldName = null, $targetName = null): self {
@@ -16,7 +14,7 @@ trait ManyToOneSetter {
 
 		if ($targetName === null) {
 			$class = get_called_class();
-			if (is_subclass_of($class, Proxy::class)) {
+			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy') || is_subclass_of($class, 'Doctrine\Common\Persistence\Proxy')) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
