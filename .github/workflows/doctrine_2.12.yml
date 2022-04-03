@@ -1,4 +1,4 @@
-name: Doctrine 2.11
+name: Doctrine 2.12
 
 on:
   push:
@@ -17,6 +17,6 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/test
       with:
-        doctrine_version: '2.11'
+        doctrine_version: '2.12'
         github_token: ${{ secrets.GITHUB_TOKEN }}
         discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}

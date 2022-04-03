@@ -1,4 +1,4 @@
-name: Symfony 4.4
+name: Doctrine 2.7
 
 on:
   push:

@@ -23,7 +23,7 @@
     "minimum-stability": "dev",
     "require" : {
         "php" : ">=7.0",
-        "doctrine/orm": "^2,>=2.5.0"
+        "doctrine/orm": "^2,>=2.4.5"
     },
     "autoload" : {
         "psr-4" : {
