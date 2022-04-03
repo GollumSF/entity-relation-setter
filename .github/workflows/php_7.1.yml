@@ -1,4 +1,4 @@
-name: PHP 7.2
+name: PHP 7.1
 
 on:
   push:
