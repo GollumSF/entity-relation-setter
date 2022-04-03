@@ -32,7 +32,7 @@ if (interface_exists('Doctrine\Persistence\Proxy')) {
 		public function __load() {}
 		public function __isInitialized() {}
 	}
-}
+} else
 if (interface_exists('Doctrine\Common\Persistence\Proxy')) {
 	class ProxyPost extends Post implements \Doctrine\Common\Persistence\Proxy {
 		public function __load() {}
@@ -64,7 +64,7 @@ if (interface_exists ('Doctrine\Persistence\Proxy')) {
 		public function __load() {}
 		public function __isInitialized() {}
 	}
-}
+} else
 if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
 	class ProxyTag extends Tag implements \Doctrine\Common\Persistence\Proxy {
 		public function __load() {}

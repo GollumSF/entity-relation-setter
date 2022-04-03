@@ -38,7 +38,7 @@ if (interface_exists ('Doctrine\Persistence\Proxy')) {
 		public function __load() {}
 		public function __isInitialized() {}
 	}
-}
+} else
 if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
 	class ProxyAddress extends Address implements \Doctrine\Common\Persistence\Proxy {
 		public function __load() {}

@@ -55,7 +55,7 @@ if (interface_exists ('Doctrine\Persistence\Proxy')) {
 		public function __load() {}
 		public function __isInitialized() {}
 	}
-}
+} else
 if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
 	class ProxyCountry2 extends Country2 implements \Doctrine\Common\Persistence\Proxy {
 		public function __load() {}
