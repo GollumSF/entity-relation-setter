@@ -1,5 +1,10 @@
 # EntityRelationSetter
 
+[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.4.5.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
+[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.7.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
+[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.11.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
+[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_latest.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
+
 [![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/symfony_4.4.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
 [![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/symfony_5.4.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
 [![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/symfony_6.0.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
