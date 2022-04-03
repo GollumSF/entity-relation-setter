@@ -2,7 +2,8 @@
 
 namespace GollumSF\EntityRelationSetter;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 use Doctrine\Persistence\Proxy;
 
 trait OneToManySetter {
@@ -13,7 +14,7 @@ trait OneToManySetter {
 			$trace = debug_backtrace();
 			$calledMethod = $trace[1]['function'];
 			$fieldName = lcfirst(substr($calledMethod, 3));
-			$fieldName = Inflector::pluralize($fieldName);
+			$fieldName = InflectorFactory::create()->build()->pluralize($fieldName);
 		}
 		
 		if ($targetName === null) {
@@ -42,7 +43,7 @@ trait OneToManySetter {
 			$trace = debug_backtrace();
 			$calledMethod = $trace[1]['function'];
 			$fieldName = lcfirst(substr($calledMethod, 6));
-			$fieldName = Inflector::pluralize($fieldName);
+			$fieldName = InflectorFactory::create()->build()->pluralize($fieldName);
 		}
 		
 		if ($targetName === null) {
