@@ -1,0 +1,22 @@
+name: Doctrine 3.5
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  create:
+    tags:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./.github/actions/test
+      with:
+        doctrine_version: '3.5.*'
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
