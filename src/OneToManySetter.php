@@ -21,7 +21,7 @@ trait OneToManySetter {
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy') || is_subclass_of($class, 'Doctrine\Common\Persistence\Proxy')) {
+			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy')) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;
@@ -56,7 +56,7 @@ trait OneToManySetter {
 		
 		if ($targetName === null) {
 			$class = get_called_class();
-			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy') || is_subclass_of($class, 'Doctrine\Common\Persistence\Proxy')) {
+			if (is_subclass_of($class, 'Doctrine\Persistence\Proxy')) {
 				$class = get_parent_class($class);
 			}
 			$targetName = $class;

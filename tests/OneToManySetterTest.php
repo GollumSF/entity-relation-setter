@@ -50,17 +50,9 @@ class Country2 {
 	}
 }
 
-if (interface_exists ('Doctrine\Persistence\Proxy')) {
-	class ProxyCountry2 extends Country2 implements \Doctrine\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
-} else
-if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
-	class ProxyCountry2 extends Country2 implements \Doctrine\Common\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
+class ProxyCountry2 extends Country2 implements \Doctrine\Persistence\Proxy {
+	public function __load(): void {}
+	public function __isInitialized(): bool { return true; }
 }
 
 class OneToManySetterTest extends TestCase {

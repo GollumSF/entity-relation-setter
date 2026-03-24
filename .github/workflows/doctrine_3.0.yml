@@ -1,4 +1,4 @@
-name: Doctrine 2.6
+name: Doctrine 3.0
 
 on:
   push:
@@ -14,10 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/test
       with:
-        doctrine_version: '2.6'
-        php_version: '7.1'
+        doctrine_version: '3.0.*'
         github_token: ${{ secrets.GITHUB_TOKEN }}
         discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}

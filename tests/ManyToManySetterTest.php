@@ -27,17 +27,9 @@ class Post {
 	}
 }
 
-if (interface_exists('Doctrine\Persistence\Proxy')) {
-	class ProxyPost extends Post implements \Doctrine\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
-} else
-if (interface_exists('Doctrine\Common\Persistence\Proxy')) {
-	class ProxyPost extends Post implements \Doctrine\Common\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
+class ProxyPost extends Post implements \Doctrine\Persistence\Proxy {
+	public function __load(): void {}
+	public function __isInitialized(): bool { return true; }
 }
 
 class Tag {
@@ -59,17 +51,9 @@ class Tag {
 	}
 }
 
-if (interface_exists ('Doctrine\Persistence\Proxy')) {
-	class ProxyTag extends Tag implements \Doctrine\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
-} else
-if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
-	class ProxyTag extends Tag implements \Doctrine\Common\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
+class ProxyTag extends Tag implements \Doctrine\Persistence\Proxy {
+	public function __load(): void {}
+	public function __isInitialized(): bool { return true; }
 }
 
 class ManyToManySetterTest extends TestCase {

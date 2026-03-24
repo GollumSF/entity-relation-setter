@@ -45,17 +45,9 @@ class Address3 {
 	}
 }
 
-if (interface_exists ('Doctrine\Persistence\Proxy')) {
-	class ProxyAddress3 extends Address3 implements \Doctrine\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
-} else
-if (interface_exists ('Doctrine\Common\Persistence\Proxy')) {
-	class ProxyAddress3 extends Address3 implements \Doctrine\Common\Persistence\Proxy {
-		public function __load() {}
-		public function __isInitialized() {}
-	}
+class ProxyAddress3 extends Address3 implements \Doctrine\Persistence\Proxy {
+	public function __load(): void {}
+	public function __isInitialized(): bool { return true; }
 }
 
 class Infos {
