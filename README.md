@@ -1,13 +1,9 @@
 # EntityRelationSetter
 
-[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.4.5.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
-[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.7.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
+[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.10.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
 [![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_2.11.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
+[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_3.0.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
 [![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/doctrine_latest.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
-
-[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/symfony_4.4.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
-[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/symfony_5.4.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
-[![Build Status](https://github.com/GollumSF/entity-relation-setter/actions/workflows/symfony_6.4.yml/badge.svg?branch=master)](https://github.com/GollumSF/entity-relation-setter/actions)
 
 [![Coverage](https://coveralls.io/repos/github/GollumSF/entity-relation-setter/badge.svg?branch=master)](https://coveralls.io/github/GollumSF/entity-relation-setter)
 [![License](https://poser.pugx.org/gollumsf/entity-relation-setter/license)](https://packagist.org/packages/gollumsf/entity-relation-setter)
